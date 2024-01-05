@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:keep_in_check/app/router.dart';
 import 'package:keep_in_check/const/app_colors.dart';
+import 'package:keep_in_check/viewmodel/auth_viewmodel.dart';
 import 'package:keep_in_check/viewmodel/onboarding_viewmodel.dart';
 
 import 'package:keep_in_check/views/splash_view.dart';
@@ -16,6 +17,9 @@ class MyApp extends StatelessWidget {
       providers: [
         ChangeNotifierProvider(
           create: (context) => OnBoardingViewModel(),
+        ),
+        ChangeNotifierProvider(
+          create: (context) => AuthViewModel(),
         ),
       ],
       child: MaterialApp(

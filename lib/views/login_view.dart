@@ -1,8 +1,15 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:keep_in_check/app/router.dart';
 import 'package:keep_in_check/const/app_colors.dart';
+import 'package:keep_in_check/services/field_validations.dart';
+import 'package:keep_in_check/viewmodel/auth_viewmodel.dart';
 import 'package:keep_in_check/widgets/add_height_width.dart';
 import 'package:keep_in_check/widgets/app_elevated_button.dart';
 import 'package:keep_in_check/widgets/screen_padding.dart';
+import 'package:provider/provider.dart';
+
+import '../widgets/app_text_form_field.dart';
 
 class LoginView extends StatelessWidget {
   static const route = 'loginViewRoute';
@@ -10,67 +17,106 @@ class LoginView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        automaticallyImplyLeading: false,
-      ),
-      body: ScreenPadding(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              'Hello,',
-              style: Theme.of(context).textTheme.headlineLarge!.copyWith(
-                    fontSize: 32,
-                    fontWeight: FontWeight.w900,
+    final authViewmodel = context.watch<AuthViewModel>();
+
+    return SafeArea(
+      child: Scaffold(
+        body: ScreenPadding(
+          topPadding: 22,
+          child: SingleChildScrollView(
+            child: Form(
+              key: authViewmodel.emailFormKey,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Hello,',
+                    style: Theme.of(context).textTheme.headlineLarge!.copyWith(
+                          fontSize: 32,
+                          fontWeight: FontWeight.w900,
+                        ),
                   ),
-            ),
-            const AddHeight(0.01),
-            Text(
-              'Please Enter you email',
-              style: Theme.of(context).textTheme.headlineSmall,
-            ),
-            const AddHeight(0.05),
-            const AppTextFormField(),
-            const AddHeight(0.05),
-            Align(
-              alignment: Alignment.center,
-              child: AppElevatedButton(
-                buttonText: 'Continue',
-                onPressed: () {},
+                  const AddHeight(0.01),
+                  AppTextFormField(
+                    controller: authViewmodel.email,
+                    hintText: 'Please Enter your email',
+                    label: 'Email',
+                    validator: FieldValidations.emailValidator,
+                    keyboardInputType: TextInputType.emailAddress,
+                  ),
+                  const AddHeight(0.02),
+                  AppTextFormField(
+                    controller: authViewmodel.password,
+                    hintText: '********',
+                    keyboardInputType: TextInputType.visiblePassword,
+                    obscureText: authViewmodel.obscurePass,
+                    label: 'Password',
+                    validator: FieldValidations.passwordValidator,
+                    suffix: IconButton(
+                      icon: Icon(authViewmodel.obscurePass
+                          ? Icons.visibility
+                          : Icons.visibility_off),
+                      onPressed: () {
+                        authViewmodel.togglePass();
+                      },
+                    ),
+                  ),
+                  if (authViewmodel.registerMode) ...[
+                    const AddHeight(0.02),
+                    AppTextFormField(
+                      controller: authViewmodel.confirmPassword,
+                      hintText: '********',
+                      keyboardInputType: TextInputType.visiblePassword,
+                      obscureText: authViewmodel.obscurePass,
+                      label: 'Confirm Password',
+                      validator: (text) =>
+                          FieldValidations.confirmPasswordValidator(
+                              text, authViewmodel.password.text),
+                      suffix: IconButton(
+                        icon: Icon(authViewmodel.obscurePass
+                            ? Icons.visibility
+                            : Icons.visibility_off),
+                        onPressed: () {
+                          authViewmodel.togglePass();
+                        },
+                      ),
+                    ),
+                  ],
+                  const AddHeight(0.08),
+                  Align(
+                    alignment: Alignment.center,
+                    child: Column(
+                      children: [
+                        AppElevatedButton(
+                          buttonText:
+                              authViewmodel.registerMode ? 'Register' : 'Login',
+                          onPressed: () {
+                            if (authViewmodel.emailFormKey.currentState!
+                                .validate()) {
+                              authViewmodel
+                                  .authenticateUsingEmailAndPassword(context);
+                            }
+                          },
+                        ),
+                        TextButton(
+                          onPressed: () {
+                            authViewmodel.toggleRegister();
+                          },
+                          child: Text(
+                            authViewmodel.registerMode
+                                ? 'Already have an account? Login'
+                                : 'Create an account? Register',
+                          ),
+                        )
+                      ],
+                    ),
+                  )
+                ],
               ),
-            )
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class AppTextFormField extends StatelessWidget {
-  const AppTextFormField({
-    super.key,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          'Email',
-          style: Theme.of(context).textTheme.headlineSmall!.copyWith(),
-        ),
-        TextFormField(
-          decoration: const InputDecoration(
-            hintText: 'Please enter your email',
-            floatingLabelBehavior: FloatingLabelBehavior.never,
-            hintFadeDuration: Duration(
-              milliseconds: 500,
             ),
           ),
         ),
-      ],
+      ),
     );
   }
 }

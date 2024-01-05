@@ -67,6 +67,7 @@ class OnBoardingView extends StatelessWidget {
                               ? "Login"
                               : 'Continue',
                           color: Colors.white,
+                          textColor: AppColors.kTextGreyColor,
                         ),
                       ],
                     ),
