@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "623651769978",
+    "project_id": "keep-in-check-7af53",
+    "storage_bucket": "keep-in-check-7af53.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:623651769978:android:318546df1fbac82650b5c3",
+        "android_client_info": {
+          "package_name": "com.example.keep_in_check"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCv7nAln58nv09SwLMlGWs-aZdY2xxhMzg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
