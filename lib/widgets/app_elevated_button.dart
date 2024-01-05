@@ -6,15 +6,17 @@ class AppElevatedButton extends StatelessWidget {
   final VoidCallback onPressed;
   final String buttonText;
   final Color color;
+  final Color textColor;
   final double borderRadius;
   final double? width;
   final double? height;
 
   const AppElevatedButton({
     super.key,
-    required this.onPressed,
     required this.buttonText,
+    required this.onPressed,
     this.color = AppColors.kPrimaryRedColor,
+    this.textColor = Colors.white,
     this.borderRadius = 8,
     this.width,
     this.height,
@@ -35,7 +37,8 @@ class AppElevatedButton extends StatelessWidget {
         child: Text(
           buttonText,
           style: Theme.of(context).textTheme.headlineSmall!.copyWith(
-                fontWeight: FontWeight.w700,
+                fontWeight: FontWeight.w600,
+                color: textColor,
               ),
         ),
       ),

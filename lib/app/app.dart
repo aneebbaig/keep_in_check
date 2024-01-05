@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:keep_in_check/app/router.dart';
+import 'package:keep_in_check/const/app_colors.dart';
 import 'package:keep_in_check/viewmodel/onboarding_viewmodel.dart';
-import 'package:keep_in_check/views/login_view.dart';
-import 'package:keep_in_check/views/onboarding/onboarding_view.dart';
+
 import 'package:keep_in_check/views/splash_view.dart';
 import 'package:provider/provider.dart';
 
@@ -30,6 +30,14 @@ class MyApp extends StatelessWidget {
 
   ThemeData appTheme() {
     return ThemeData(
+      inputDecorationTheme: const InputDecorationTheme(
+        focusedBorder: UnderlineInputBorder(
+          borderSide: BorderSide(
+            color: AppColors.kTextGreyColor, // Change the color here
+            width: 2.0,
+          ),
+        ),
+      ),
       textTheme: TextTheme(
         headlineLarge: GoogleFonts.montserrat(
           fontSize: 24,
@@ -40,6 +48,7 @@ class MyApp extends StatelessWidget {
         ),
         headlineSmall: GoogleFonts.montserrat(
           fontSize: 18,
+          fontWeight: FontWeight.w500,
         ),
         bodyLarge: GoogleFonts.poppins(
           fontSize: 16,
