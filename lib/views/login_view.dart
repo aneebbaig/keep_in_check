@@ -36,32 +36,38 @@ class LoginView extends StatelessWidget {
                           fontWeight: FontWeight.w900,
                         ),
                   ),
-                  const AddHeight(0.01),
+                  const AddHeight(0.03),
                   AppTextFormField(
                     controller: authViewmodel.email,
-                    hintText: 'Please Enter your email',
+                    hintText: 'Enter your email',
                     label: 'Email',
                     validator: FieldValidations.emailValidator,
                     keyboardInputType: TextInputType.emailAddress,
                   ),
-                  const AddHeight(0.02),
+                  const AddHeight(0.04),
                   AppTextFormField(
                     controller: authViewmodel.password,
-                    hintText: '********',
+                    hintText: 'Enter you password',
                     keyboardInputType: TextInputType.visiblePassword,
                     obscureText: authViewmodel.obscurePass,
                     label: 'Password',
                     validator: FieldValidations.passwordValidator,
-                    suffix: IconButton(
-                      icon: Icon(authViewmodel.obscurePass
-                          ? Icons.visibility
-                          : Icons.visibility_off),
-                      onPressed: () {
+                    suffix: GestureDetector(
+                      onTap: () {
                         authViewmodel.togglePass();
                       },
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 10,
+                          vertical: 0,
+                        ),
+                        child: Icon(authViewmodel.obscurePass
+                            ? Icons.visibility
+                            : Icons.visibility_off),
+                      ),
                     ),
                   ),
-                  if (authViewmodel.registerMode) ...[
+                  if (authViewmodel.isRegister) ...[
                     const AddHeight(0.02),
                     AppTextFormField(
                       controller: authViewmodel.confirmPassword,
@@ -83,39 +89,62 @@ class LoginView extends StatelessWidget {
                     ),
                   ],
                   const AddHeight(0.08),
-                  Align(
-                    alignment: Alignment.center,
-                    child: Column(
-                      children: [
-                        AppElevatedButton(
-                          buttonText:
-                              authViewmodel.registerMode ? 'Register' : 'Login',
-                          onPressed: () {
-                            if (authViewmodel.emailFormKey.currentState!
-                                .validate()) {
-                              authViewmodel
-                                  .authenticateUsingEmailAndPassword(context);
-                            }
-                          },
-                        ),
-                        TextButton(
-                          onPressed: () {
-                            authViewmodel.toggleRegister();
-                          },
-                          child: Text(
-                            authViewmodel.registerMode
-                                ? 'Already have an account? Login'
-                                : 'Create an account? Register',
+                  authViewmodel.isLoading
+                      ? const AppCircularProgressIndicator()
+                      : Align(
+                          alignment: Alignment.center,
+                          child: Column(
+                            children: [
+                              AppElevatedButton(
+                                buttonText: authViewmodel.isRegister
+                                    ? 'Register'
+                                    : 'Log In',
+                                onPressed: () {
+                                  if (authViewmodel.emailFormKey.currentState!
+                                      .validate()) {
+                                    authViewmodel.isRegister
+                                        ? authViewmodel
+                                            .createUserUsingEmailAndPassword(
+                                                context)
+                                        : authViewmodel
+                                            .signInUsingEmailAndPassword(
+                                                context);
+                                  }
+                                },
+                              ),
+                              TextButton(
+                                onPressed: () {
+                                  authViewmodel.toggleRegister();
+                                },
+                                child: Text(
+                                  authViewmodel.isRegister
+                                      ? 'Already have an account? Login'
+                                      : 'Create an account? Register',
+                                ),
+                              )
+                            ],
                           ),
                         )
-                      ],
-                    ),
-                  )
                 ],
               ),
             ),
           ),
         ),
+      ),
+    );
+  }
+}
+
+class AppCircularProgressIndicator extends StatelessWidget {
+  const AppCircularProgressIndicator({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return const Center(
+      child: CircularProgressIndicator(
+        color: AppColors.kPrimaryRedColor,
       ),
     );
   }

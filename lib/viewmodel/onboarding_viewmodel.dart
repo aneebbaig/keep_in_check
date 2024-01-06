@@ -3,7 +3,7 @@ import 'package:keep_in_check/app/router.dart';
 import 'package:keep_in_check/const/app_colors.dart';
 import 'package:keep_in_check/const/app_images.dart';
 import 'package:keep_in_check/models/onboarding_model.dart';
-import 'package:keep_in_check/services/shared_preferences_manager.dart';
+import 'package:keep_in_check/services/shared_preferences_service.dart';
 import 'package:keep_in_check/views/login_view.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -36,8 +36,8 @@ class OnBoardingViewModel extends ChangeNotifier {
 
   void nextOnBoardingScreen() async {
     if (_selectedIndex == 2) {
-      await SharedPreferencesManager()
-          .setBool(SharedPreferencesManager.hasOnboarded, true)
+      await SharedPreferencesService()
+          .setBool(SharedPreferencesService.hasOnboarded, true)
           .then(
             (value) => AppRouter.pushReplacementNamed(LoginView.route),
           );

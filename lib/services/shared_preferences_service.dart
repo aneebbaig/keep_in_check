@@ -1,16 +1,17 @@
 import 'package:shared_preferences/shared_preferences.dart';
 
-class SharedPreferencesManager {
+class SharedPreferencesService {
   static const String hasOnboarded = 'hasOnboarded';
+  static const String isLoggedIn = 'isLoggedIn';
 
-  static final SharedPreferencesManager _instance =
-      SharedPreferencesManager._internal();
+  static final SharedPreferencesService _instance =
+      SharedPreferencesService._internal();
 
-  factory SharedPreferencesManager() {
+  factory SharedPreferencesService() {
     return _instance;
   }
 
-  SharedPreferencesManager._internal();
+  SharedPreferencesService._internal();
 
   late SharedPreferences _preferences;
 
