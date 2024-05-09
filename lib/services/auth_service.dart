@@ -22,4 +22,8 @@ class AuthService {
       rethrow;
     }
   }
+
+  User? getCurrentUser() {
+    return FirebaseAuth.instance.currentUser;
+  }
 }

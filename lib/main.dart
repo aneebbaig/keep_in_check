@@ -1,9 +1,11 @@
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:keep_in_check/firebase_options.dart';
+import 'package:keep_in_check/services/connectivity_service.dart';
+import 'package:provider/provider.dart';
 
-import 'app/app.dart';
+import 'app.dart';
 import 'services/shared_preferences_service.dart';
 
 void main() async {
@@ -11,6 +13,12 @@ void main() async {
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
 
   await SharedPreferencesService().init();
+  ConnectivityService().initialize();
 
-  runApp(const MyApp());
+  runApp(StreamProvider<ConnectivityResult>(
+    create: (context) =>
+        Connectivity().onConnectivityChanged.map((results) => results.first),
+    initialData: ConnectivityResult.none,
+    child: const MyApp(),
+  ));
 }

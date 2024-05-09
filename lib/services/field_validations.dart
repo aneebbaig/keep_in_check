@@ -1,4 +1,14 @@
-class FieldValidations {
+class AppValidators {
+  static String? requiredAmountField(String? value) {
+    if (value == null || value.isEmpty) {
+      return 'This field is required';
+    }
+    if (value == "0") {
+      return "Amount should be more than 0";
+    }
+    return null;
+  }
+
   static String? requiredField(String? value) {
     if (value == null || value.isEmpty) {
       return 'This field is required';
